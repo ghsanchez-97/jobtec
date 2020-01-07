@@ -1,0 +1,9 @@
+Authentication in mongodb test:
+
+User: admin.
+Password: admin123.
+Rol: root.
+
+use Guni
+
+db.user.save({firstname:'Guy', secondname:'Huascar'});

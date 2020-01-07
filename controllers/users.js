@@ -18,6 +18,17 @@ user.image = 'null';
 
  if(params.password){
    //Encrypt pass and save data
+   bcrypt.hash(params.password, null, null, function(err,hash){
+    user.password = hash;
+    
+    if(user.firstname != null && user.middlename != null && user.firstlastname != null &&  user.firstlastname != null && user.middlelastname != null && user.email != null && user.rol != null){
+    //
+    }
+    else{
+     res.status(200).send({ message: 'Complete los campos'});
+    }
+ });
+
  }else{
    res.status(500).send({message:'Introducir la contraseña'});
  }
