@@ -12,7 +12,14 @@ var UserSchema = Schema({
 	email: String,
 	password: String,
 	rol: String,
-	image: String	
+	image: String,
+	fechaagregada: Date,
+    fechamodificado:Date,
+	fechaeliminado: Date,
+	personagregada: String,
+    personmodificado: String,
+    personeliminado: String,
+	
 });
 
 module.exports = mongoose.model('User',UserSchema);
