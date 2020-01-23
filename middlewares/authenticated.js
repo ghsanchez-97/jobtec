@@ -10,7 +10,7 @@ exports.ensureAuth = function(req, res, next){
         return res.status(403).send({message:'La petición no tiene autorización'});
     }
     
-    var token = req.headers.authorization.replace(/['"]+/g,'');
+    var token = req.headers.authorization.replace(/['"]+/g, '');
 
     try{
         var payload = jwt.encode(token, secret);
@@ -28,12 +28,12 @@ exports.ensureAuth = function(req, res, next){
     next();
 };
 
-exports.decode = function(token){
-    try{
-        const payload = jwt.decode(token, secret);
-        return payload;
-    }catch(error){
-        return null;
-    }
-}
-exports.user = user;
+// exports.decode = function(token){
+//     try{
+//         var payload = jwt.decode(token, secret);
+//         return payload;
+//     }catch(error){
+//         return null;
+//     }
+// }
+// exports.user = user;

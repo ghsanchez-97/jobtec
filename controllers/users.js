@@ -178,9 +178,28 @@ function getImageFile(req, res){
   });
 }
 
+function deleteUser(req, res){
+  var userId = req.params.id;
+  var update = req.body;
+  update.fechaeliminado = Date.now();
+
+  User.findByIdAndUpdate(userId, update, (err, userUpdate) =>{
+    if(err){
+      res.status(500).send({message:'Error en la solicitud'});
+    }else{
+      if(!userUpdate){
+        res.status(404).send({message:'Error en eliminar USUARIO'});
+      }else{
+        res.status(200).send({user:userUpdate});
+      }
+    }
+  });
+}
+
 module.exports = {
   saveUser,
   getUser,
+  deleteUser,
   getUsers,
   updateUser,
   uploadImage,
