@@ -82,11 +82,108 @@ function getNews(req, res){
         }
     })
 }
+function getNewsPublic(req, res){
+    var page = req.params.page;
+    var itemPerPage = 3;
+
+    New.find({$where: function(){
+        return (this.datedel == null)
+    }}).sort('name').paginate(page, itemPerPage, function(err, nw, total){
+        if(err){
+            res.status(500).send({message:'Error en la solicitud'});
+        }else{
+            if(!nw){
+                res.status(404).send({message:'No hay Noticias !!!'});
+            }else{
+                return res.status(200).send({
+                    total:total,
+                    nw:nw,
+                });
+            }
+        }
+    })
+}
+function updateNew(req, res){
+    var newId = req.params.id;
+    var update = req.body;
+    update.dataedit = Date.now();
+
+    New.findByIdAndUpdate(newId, update, (err, newUpdate) =>{
+        if(err){
+            res.status(500).send({message:'Error en la solicitud'});
+        }else{
+            if(!newUpdate){
+                res.status(404).send({message:'Error al actualizar'});
+            }else{
+                res.status(200).send({nw:newUpdate});
+            }
+        }
+    });
+}
+function uploadImage(req, res){
+    var newId = req.params.id;
+    var file_name = 'No subido...';
+
+    if(req.files){
+        var file_path = req.files.image.path;
+        var file_split = file_path.split('\/');
+        var file_name = file_split[2];
+        var ext_split = file_name.split('\.');
+        var file_ext = ext_split[1];
+
+        if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg'){
+            New.findByIdAndUpdate(newId, {image:file_name}, (err, newUpdate) =>{
+                if(!newUpdate){
+                    res.status(404).send({message:'Error al subir Imagen'});
+                }else{
+                    res.status(200).send({nw:newUpdate});
+                }
+            });
+        }else{
+            res.status(200).send({message:'Extensión de imagen no valido'});
+        }
+    }else{
+        res.status(200).send({message:'No has subido imagen....'});
+    }
+}
+function getImageNew(req, res){
+    var imageFile = req.params.imageFile;
+    var path_file = './uploads/new/'+imageFile;
+
+    fs.exists(path_file, function(exists){
+        if(exists){
+            res.sendFile(path.resolve(path_file));
+        }else{
+            res.status(404).send({message:'No existe imagen....'})
+        }
+    })
+}
+function deleteNew(req, res){
+    var newId = req.params.id;
+    var update = req.body;
+    update.datedel = Date.now();
+
+    New.findByIdAndUpdate(newId, update, (err, newUpdate) =>{
+        if(err){
+            res.status(500).send({message:'Error en la solicitud'});
+        }else{
+            if(!newUpdate){
+                res.status(404).send({message:'Error al eliminar'});
+            }else{
+                res.status(200).send({nw:newUpdate});
+            }
+        }
+    });
+}
 
 module.exports = {
     saveNew,
     getNew,
     getNewPublic,
-    getNews
-
+    getNews,
+    getNewsPublic,
+    updateNew,
+    uploadImage,
+    getImageNew,
+    deleteNew
 }
