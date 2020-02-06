@@ -48,27 +48,147 @@ function getEvent(req, res){
         }
     });
 }
-
 function getEventPubli(req, res){
-    var eventNm = req.params.id;
+    var eventNm = req.params.name;
 
-    Event.findById(eventNm, (err, event)=>{
+    Event.findOne({name:eventNm}, (err, event)=>{
         if(err){
             res.status(500).send({message:'Error en la solicitud'});
         }else{
             if(!event){
                 res.status(404).send({message:'No existe el Evento'});
             }else{
-                res.status(200).send({event:event});
-                console.log(event);
-                console.log(eventNm);
+                res.status(200).send({event});
             }
         }
+    });
+}
+function getEvents(req, res){
+    var page = req.params.page;
+    var itemPerPage = 3;
+
+    Event.find({$where: function(){
+        return (this.datedel == null)
+    }}).sort('name').paginate(page, itemPerPage, function(err, event, total){
+        if(err){
+            res.status(500).send({message:'Error en la solicitud'});
+        }else{
+            if(!event){
+                res.status(404).send({message:'No hay eventos creados!!!'});
+            }else{
+                return res.status(200).send({
+                    Total: total,
+                    event: event
+                });
+            }
+        }
+    });
+}
+function getEventsPublic(req, res){
+    var page = req.params.page;
+    var itemPerPage = 3;
+
+    Event.find({$where: function(){
+        return (this.datedel == null)
+    }}).sort('name').paginate(page, itemPerPage, function(err, event, total){
+        if(err){
+            res.status(500).send({message:'Error en la solicitud'});
+        }else{
+            if(!event){
+                res.status(404).send({message:'No hay eventos creados!!!'});
+            }else{
+                return res.status(200).send({
+                    Total: total,
+                    event: event
+                });
+            }
+        }
+    });
+}
+function updateEvent(req, res){
+    var eventId = req.params.id;
+    var update = req.body;
+    update.dataedit = Date.now();
+
+    Event.findByIdAndUpdate(eventId, update, (err, eventUpdate)=>{
+        if(err){
+            res.status(500),send({message:'Error en la solicitud'});
+        }else{
+            if(!eventUpdate){
+                res.status(404).send({message:'Error al actualizar evento'});
+            }else{
+                res.status(200).send({eventUpdate:eventUpdate});
+            }        
+        }
+    });
+}
+function uploadImage(req, res){
+    var enventId = req.params.id;
+    var file_name = 'No subido....';
+
+    if(req.files){
+        var file_path = req.files.image.path;
+        var file_split = file_path.split('\/');
+        var file_name = file_split[2];
+
+        var ext_split = file_name.split('\.');
+        var file_ext = ext_split[1];
+
+
+        if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif'){
+            
+            Event.findByIdAndUpdate(enventId, {image: file_name}, (err, eventUpdate)=>{
+                if(!eventUpdate){
+                    res.status(404).send({message:'Error al subir imagen'});
+                }else{
+                    res.status(200).send({eventUpdate:eventUpdate})
+                }
+            });
+        }else{
+            res.status(200).send({message:'Error tipo de extensión'})
+        }
+    }else{
+        res.status(200).send({message:'No has subido ninguna imagen...'});
+    }
+}
+function getImageEvent(req, res){
+    var imageFile = req.params.imageFile;
+    var path_file = './uploads/event/'+imageFile;
+
+    fs.exists(path_file, function(exists){
+        if(exists){
+            res.sendFile(path.resolve(path_file));
+        }else{
+            res.status(200).send({message:'No existe imagen...'});
+        }
+    });
+}
+function deleteEvent(req, res){
+    var eventId = req.params.id;
+    var update = req.body;
+    update.datedel = Date.now();
+
+    Event.findByIdAndUpdate(eventId, update, (err, eventUpdate)=>{
+       if(err){
+           res.status(500).send({message:'Error en la solicitud'});
+       }else{
+           if(!eventUpdate){
+               res.status(404).send({message:'Evento no existe'});
+           }else{
+               res.status(200).send({event:eventUpdate});
+           }
+       } 
     });
 }
 
 module.exports = {
     newEvent,
     getEvent,
-    getEventPubli
+    getEventPubli,
+    getEvents,
+    getEventsPublic,
+    updateEvent,
+    uploadImage,
+    getImageEvent,
+    deleteEvent
 }
