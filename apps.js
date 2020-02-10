@@ -9,7 +9,8 @@ var app = express();
 //LOAD RUTS
 var user_routes = require('./routes/user');
 var event_routes = require('./routes/event');
-var new_routes = require('./routes/new')
+var new_routes = require('./routes/new');
+var agend_routes = require('./routes/agend')
 
 app.use(bodyparse.urlencoded({extended:false}));
 app.use(bodyparse.json());
@@ -20,5 +21,6 @@ app.use(bodyparse.json());
 app.use('/api', user_routes);
 app.use('/api', event_routes);
 app.use('/api', new_routes);
+app.use('/api', agend_routes);
 
 module.exports = app;

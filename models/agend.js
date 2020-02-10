@@ -8,6 +8,7 @@ var AgendSchema = Schema({
 	name: String,
 	description: String,
 	detail: String,
+	date: Date,
 	datecreat: Date,
 	dataedit: Date,
 	datedel: Date,
