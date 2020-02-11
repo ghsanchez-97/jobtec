@@ -23,7 +23,6 @@ function saveAgend(req, res){
                 res.status(404).send({message:'Error al guardar Agenda'});
             }else{
                 res.status(200).send({agend:agendStored});
-                console.log(agendStored)
             }
         }
     });
@@ -118,6 +117,23 @@ function updateAgend(req, res){
         }
     });
 }
+function deleteAgend(req, res){
+    var agendId = req.params.id;
+    var update = req.body;
+    update.datedel = Date.now();
+
+    Agend.findByIdAndUpdate(agendId, update, (err, agendUpdate) => {
+        if(err){
+            res.status(500).send({message:'Error en la solicitud'});
+        }else{
+            if(!agendUpdate){
+                res.status(404).send({message:'Error no se elimino'});
+            }else{
+                res.status(200).send({agend:agendUpdate});
+            }
+        }
+    });
+}
 
 module.exports = {
     saveAgend,
@@ -125,5 +141,6 @@ module.exports = {
     getAgendPublic,
     getsAgends,
     getsAgendsPublic,
-    updateAgend
+    updateAgend,
+    deleteAgend
 }

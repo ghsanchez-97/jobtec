@@ -11,5 +11,6 @@ api.get('/getAgendPublic/:name', AgendController.getAgendPublic);
 api.get('/getsAgends/:page?', md_auth.ensureAuth, AgendController.getsAgends);
 api.get('/getsAgendsPublic/:page?', AgendController.getsAgendsPublic);
 api.put('/updateAgend/:id', md_auth.ensureAuth, AgendController.updateAgend);
+api.delete('/deleteAgend/:id', md_auth.ensureAuth, AgendController.deleteAgend);
 
 module.exports = api;
