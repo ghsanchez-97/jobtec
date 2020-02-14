@@ -12,6 +12,7 @@ var event_routes = require('./routes/event');
 var new_routes = require('./routes/new');
 var agend_routes = require('./routes/agend');
 var audi_routes = require('./routes/audi');
+var newletters_routes = require('./routes/newletters');
 
 app.use(bodyparse.urlencoded({extended:false}));
 app.use(bodyparse.json());
@@ -24,5 +25,6 @@ app.use('/api', event_routes);
 app.use('/api', new_routes);
 app.use('/api', agend_routes);
 app.use('/api', audi_routes);
+app.use('/api', newletters_routes);
 
 module.exports = app;
