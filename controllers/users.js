@@ -6,10 +6,12 @@ var jwt = require('../services/jwt');
 var fs = require('fs');
 var path = require('path')
 var mongoosePagination = require('mongoose-pagination');
+var auth = require('../middlewares/authenticated');
 
 function saveUser(req, res){
 var user = new User();
 var params = req.body;
+var user = auth.decode(req.headers.authorization);
 
 user.firstname = params.firstname;
 user.middlename = params.middlename;
@@ -19,8 +21,7 @@ user.email = params.email;
 user.rol = params.rol;
 user.image = 'null';
 user.fechaagregada = Date.now();
-user.fechamodificado = null;
-user.fechaeliminado = null;
+user.personcreat = user.name;
 
  if(params.password){
    //Encrypt pass and save data
@@ -107,7 +108,7 @@ function loginUser(req, res){
             if(params.gethash){
               res.status(200).send({
                 token: jwt.createToken(user)
-              })
+              });
             }else{
               res.status(200).send({user});
             }
@@ -121,9 +122,11 @@ function loginUser(req, res){
 }
 
 function updateUser(req, res){
+  var user = auth.decode(req.headers.authorization);
   var userId = req.params.id;
   var update = req.body;
   update.fechamodificado = Date.now();
+  update.personedit = user.name;
 
   User.findByIdAndUpdate(userId, update, (err,userUpdate) =>{
     if(err){
@@ -179,9 +182,11 @@ function getImageFile(req, res){
 }
 
 function deleteUser(req, res){
+  var user = auth.decode(req.headers.authorization);
   var userId = req.params.id;
   var update = req.body;
   update.fechaeliminado = Date.now();
+  update.persondel = user.name;
 
   User.findByIdAndUpdate(userId, update, (err, userUpdate) =>{
     if(err){

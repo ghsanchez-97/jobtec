@@ -9,6 +9,7 @@ exports.createToken = function(user){
         sub: user._id,
         firstname: user.firstname,
         firstlastname: user.firstlastname,
+        name: user.firstname + user.firstlastname,
         email: user.email,
         role: user.rol,
         image: user.image,
@@ -17,4 +18,4 @@ exports.createToken = function(user){
     };
 
     return jwt.encode(payload, secret);
-}
+};

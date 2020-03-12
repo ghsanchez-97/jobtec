@@ -4,16 +4,19 @@ var path = require('path');
 var fs = require('fs');
 var mongoosePagination = require('mongoose-pagination');
 var Agend = require('../models/agend');
+var auth = require('../middlewares/authenticated');
 
 function saveAgend(req, res){
     var agend = new Agend();
     var params = req.body;
+    var user = auth.decode(req.headers.authorization);
 
     agend.name = params.name;
     agend.description = params.description;
     agend.detail = params.detail;
     agend.date = params.date;
     agend.datecreat = Date.now();
+    agend.personcreat = user.name;
 
     agend.save((err, agendStored) =>{
         if(err){
@@ -101,9 +104,11 @@ function getsAgendsPublic(req, res){
     });
 }
 function updateAgend(req, res){
+    var user = auth.decode(req.headers.authorization);
     var agendId = req.params.id;
     var update = req.body;
     update.dataedit = Date.now();
+    update.personedit = user.name;
 
     Agend.findByIdAndUpdate(agendId, update, (err, agendUpdate) =>{
         if(err){
@@ -118,9 +123,11 @@ function updateAgend(req, res){
     });
 }
 function deleteAgend(req, res){
+    var user = auth.decode(req.headers.authorization);
     var agendId = req.params.id;
     var update = req.body;
     update.datedel = Date.now();
+    update.personedel = user.name;
 
     Agend.findByIdAndUpdate(agendId, update, (err, agendUpdate) => {
         if(err){

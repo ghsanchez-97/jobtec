@@ -4,14 +4,17 @@ var path = require('path');
 var fs = require('fs');
 var mongoosePagination = require('mongoose-pagination');
 var Newletters = require ('../models/newsletters');
+var auth = require('../middlewares/authenticated');
 
 function saveNewletters(req, res){
     var newsletters = new Newletters();
     var params = req.body;
+    var user = auth.decode(req.headers.authorization);
 
     newsletters.name = params.name;
     newsletters.link = params.link;
     newsletters.datecreat = Date.now();
+    newsletters.personcreat = user.name;
 
     newsletters.save((err, newslettersStored) =>{
         if(err){
@@ -98,9 +101,11 @@ function getsNewlettersPublic(req, res){
     });
 }
 function updateNewletters(req, res){
+    var user = auth.decode(req.headers.authorization);
     var newslettersId = req.params.id;
     var update = req.body;
     update.dataedit = Date.now();
+    update.personedit = user.name;
 
     Newletters.findByIdAndUpdate(newslettersId, update, (err, newslettersUpdate) =>{
         if(err){
@@ -115,9 +120,11 @@ function updateNewletters(req, res){
     });
 }
 function deleteNewletters(req, res){
+    var user = auth.decode(req.headers.authorization);
     var newslettersId = req.params.id;
     var update = req.body;
     update.datedel = Date.now();
+    update.persondel = user.name;
 
     Newletters.findByIdAndUpdate(newslettersId, update, (err, newslettersUpdate) =>{
         if(err){

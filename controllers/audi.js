@@ -4,15 +4,18 @@ var path = require('path');
 var fs = require('fs');
 var mongoosePagination = require('mongoose-pagination');
 var Audi = require('../models/Audi');
+var auth = require('../middlewares/authenticated');
 
 function saveAudi(req, res){
     var audi = new Audi();
     var params = req.body;
+    var user = auth.decode(req.headers.authorization);
 
     audi.name = params.name;
     audi.link = params.link;
     audi.issolext = params.issolext;
     audi.datecreat = Date.now();
+    audi.personcreat = user.name;
 
     audi.save((err, audiStored) =>{
         if(err){
@@ -99,9 +102,11 @@ function getsAudisPublic(req, res){
     });
 }
 function updateAudi(req, res){
+    var user = auth.decode(req.headers.authorization);
     var audiId = req.params.id;
     var update = req.body;
     update.dataedit = Date.now();
+    update.personedit = user.name;
 
     Audi.findByIdAndUpdate(audiId, update, (err, audiUpdate) =>{
         if(err){
@@ -116,9 +121,11 @@ function updateAudi(req, res){
     });
 }
 function deleteAudi(req, res){
+    var user = auth.decode(req.headers.authorization);
     var audiId = req.params.id;
     var update = req.body;
     update.datedel = Date.now();
+    update.persondel = user.name;
 
     Audi.findByIdAndUpdate(audiId, update, (err, audiUpdate) =>{
         if(err){

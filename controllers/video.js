@@ -4,14 +4,17 @@ var path = require('path');
 var fs = require('fs');
 var mongoosePagination = require('mongoose-pagination');
 var Video = require('../models/video');
+var auth = require('../middlewares/authenticated')
 
 function saveVideo(req, res){
     var video = new Video();
     var params = req.body;
+    var user = auth.decode()
 
     video.name = params.name;
     video.link = params.link;
     video.datecreat = Date.now(); 
+    Video.personcreat = user.name;
 
     video.save((err, videoStored) =>{
         if(err){
@@ -101,9 +104,11 @@ function getsVideoPublic(req, res){
 
 }
 function updateVideo(req, res){
+    var user = auth.decode(req.headers.authorization);
     var videoId = req.params.id;
     var update = req.body;
     update.dataedit = Date.now();
+    update.personedit = user.name;
 
     Video.findByIdAndUpdate(videoId, update, (err, videoUpdate) =>{
         if(err){
@@ -118,9 +123,11 @@ function updateVideo(req, res){
     });
 }
 function deleteVideo(req, res){
+    var user = auth.decode(req.headers.authorization);
     var videoId = req.params.id;
     var update = req.body;
     update.datedel = Date.now();
+    update.persondel = user.name;
 
     Video.findByIdAndUpdate(videoId, update, (err, videoUpdate) => {
         if(err){

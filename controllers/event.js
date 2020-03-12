@@ -3,23 +3,19 @@
 var path = require('path');
 var fs = require('fs');
 var mongoosePagination = require('mongoose-pagination');
-// var auth = require('../middlewares/authenticated');
+var auth = require('../middlewares/authenticated');
 var Event = require('../models/event');
 
 function newEvent(req, res){
     var event = new Event();
     var params = req.body;
-    //var user = auth.ensureAuth(req.headers.authorization);
+    var user = auth.decode(req.headers.authorization);
 
     event.name = params.name;
     event.link = params.link;
     event.image = 'null'
     event.datecreat = Date.now();
-    event.dataedit = null;
-    event.datedel = null;
-    // event.personcreat = user.firstname;
-    // event.personedit = null;
-    // event.persondel = null;
+    event.personcreat = user.name;
 
     event.save((err, eventStored) =>{
         if(err){
@@ -106,9 +102,11 @@ function getEventsPublic(req, res){
     });
 }
 function updateEvent(req, res){
+    var user = auth.decode(req.headers.authorization);
     var eventId = req.params.id;
     var update = req.body;
     update.dataedit = Date.now();
+    update.personedit = user.name;
 
     Event.findByIdAndUpdate(eventId, update, (err, eventUpdate)=>{
         if(err){
@@ -164,9 +162,11 @@ function getImageEvent(req, res){
     });
 }
 function deleteEvent(req, res){
+    var user = auth.decode(req.headers.authorization); 
     var eventId = req.params.id;
     var update = req.body;
     update.datedel = Date.now();
+    update.persondel = user.name;
 
     Event.findByIdAndUpdate(eventId, update, (err, eventUpdate)=>{
        if(err){

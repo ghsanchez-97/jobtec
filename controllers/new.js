@@ -4,10 +4,12 @@ var path = require('path');
 var fs = require('fs');
 var mongoosePagination = require('mongoose-pagination');
 var New = require('../models/news');
+var auth = require('../middlewares/authenticated');
 
 function saveNew(req, res){
     var nw = new New();
     var params = req.body;
+    var user = auth.decode(req.headers.authorization);
 
     nw.name = params.name;
     nw.detail = params.detail;
@@ -16,7 +18,7 @@ function saveNew(req, res){
     nw.ispriseg = params.ispriseg;
     nw.image = null;
     nw.datecreat = Date.now();
-
+    nw.personcreat = user.name;
 
     nw.save((err, nwStored) =>{
         if(err){
@@ -30,7 +32,6 @@ function saveNew(req, res){
         }
     });
 }
-
 function getNew(req, res){
     var newId = req.params.id;
 
@@ -104,9 +105,11 @@ function getNewsPublic(req, res){
     })
 }
 function updateNew(req, res){
+    var user = auth.decode(req.headers.authorization);
     var newId = req.params.id;
     var update = req.body;
     update.dataedit = Date.now();
+    update.personedit = user.name;
 
     New.findByIdAndUpdate(newId, update, (err, newUpdate) =>{
         if(err){
@@ -159,9 +162,11 @@ function getImageNew(req, res){
     })
 }
 function deleteNew(req, res){
+    var user = auth.decode(req.headers.authorization);
     var newId = req.params.id;
     var update = req.body;
     update.datedel = Date.now();
+    update.personedel = user.name;
 
     New.findByIdAndUpdate(newId, update, (err, newUpdate) =>{
         if(err){
