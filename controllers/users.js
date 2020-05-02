@@ -11,7 +11,7 @@ var auth = require('../middlewares/authenticated');
 function saveUser(req, res){
 var user = new User();
 var params = req.body;
-var user = auth.decode(req.headers.authorization);
+var use = auth.decode(req.headers.authorization);
 
 user.firstname = params.firstname;
 user.middlename = params.middlename;
@@ -21,7 +21,7 @@ user.email = params.email;
 user.rol = params.rol;
 user.image = 'null';
 user.fechaagregada = Date.now();
-user.personcreat = user.name;
+user.personcreat = use.name;
 
  if(params.password){
    //Encrypt pass and save data
