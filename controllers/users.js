@@ -70,7 +70,7 @@ function getUser(req, res){
 
 function getUsers(req, res){
   var page = req.params.page;
-  var itemPerPage = 5;
+  var itemPerPage = 20;
 
   User.find({ $where: function(){
     return (this. fechaeliminado == null)
