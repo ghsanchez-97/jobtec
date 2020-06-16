@@ -2,10 +2,11 @@
 
 var mongoose = require('mongoose');
 var app = require('./apps');
-var port = process.env.PORT || 3000 			
+var port = process.env.PORT || 3000 
 
+mongoose.set('useFindAndModify', false);
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/Guni', {useNewUrlParser: true}, (err, res)=>{
+mongoose.connect('mongodb://localhost:27017/Guni', {useNewUrlParser: true,  useUnifiedTopology: true}, (err, res)=>{
 
   if(err){
     throw err;
