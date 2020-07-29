@@ -13,9 +13,9 @@ var UserSchema = Schema({
 	password: String,
 	rol: String,
 	image: String,
-	fechaagregada: Date,
-    fechamodificado:Date,
-	fechaeliminado: Date,
+	datecreat: Date,
+	dataedit: Date,
+	datedel: Date,
 	personcreat: String,
 	personedit: String,
 	persondel: String

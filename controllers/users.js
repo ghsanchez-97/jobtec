@@ -20,7 +20,7 @@ user.middlelastname = params.middlelastname;
 user.email = params.email;
 user.rol = params.rol;
 user.image = 'null';
-user.fechaagregada = Date.now();
+user.datecreat = Date.now();
 user.personcreat = use.name;
 
  if(params.password){
@@ -125,7 +125,7 @@ function updateUser(req, res){
   var user = auth.decode(req.headers.authorization);
   var userId = req.params.id;
   var update = req.body;
-  update.fechamodificado = Date.now();
+  update.dataedit = Date.now();
   update.personedit = user.name;
 
   User.findByIdAndUpdate(userId, update, (err,userUpdate) =>{
@@ -185,7 +185,7 @@ function deleteUser(req, res){
   var user = auth.decode(req.headers.authorization);
   var userId = req.params.id;
   var update = req.body;
-  update.fechaeliminado = Date.now();
+  update.datedel = Date.now();
   update.persondel = user.name;
 
   User.findByIdAndUpdate(userId, update, (err, userUpdate) =>{

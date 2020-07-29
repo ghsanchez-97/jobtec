@@ -64,7 +64,7 @@ function getNewPublic(req, res){
 }
 function getNews(req, res){
     var page = req.params.page;
-    var itemPerPage = 3;
+    var itemPerPage = 100000;
 
     New.find({$where: function(){
         return (this.datedel == null)

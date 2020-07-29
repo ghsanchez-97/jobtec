@@ -61,7 +61,7 @@ function getEventPubli(req, res){
 }
 function getEvents(req, res){
     var page = req.params.page;
-    var itemPerPage = 3;
+    var itemPerPage = 1000000;
 
     Event.find({$where: function(){
         return (this.datedel == null)
