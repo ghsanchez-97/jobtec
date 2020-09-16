@@ -1,8 +1,8 @@
 'use strict'
 
-var mongoose = require('mongoose');
-var app = require('./apps');
-var port = process.env.PORT || 3000 
+const mongoose = require('mongoose');
+const app = require('./apps');
+const port = process.env.PORT || 3000 
 
 mongoose.set('useFindAndModify', false);
 mongoose.Promise = global.Promise;

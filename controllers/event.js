@@ -1,15 +1,15 @@
 'use strict'
 
-var path = require('path');
-var fs = require('fs');
-var mongoosePagination = require('mongoose-pagination');
-var auth = require('../middlewares/authenticated');
-var Event = require('../models/event');
+const path = require('path');
+const fs = require('fs');
+const mongoosePagination = require('mongoose-pagination');
+const auth = require('../middlewares/authenticated');
+const Event = require('../models/event');
 
 function newEvent(req, res){
-    var event = new Event();
-    var params = req.body;
-    var user = auth.decode(req.headers.authorization);
+    const event = new Event();
+    const params = req.body;
+    const user = auth.decode(req.headers.authorization);
 
     event.name = params.name;
     event.link = params.link;
@@ -30,7 +30,7 @@ function newEvent(req, res){
     });
 }
 function getEvent(req, res){
-    var enventId = req.params.id;
+    const enventId = req.params.id;
     
     Event.findById(enventId, (err, event)=>{
         if(err){
@@ -45,7 +45,7 @@ function getEvent(req, res){
     });
 }
 function getEventPubli(req, res){
-    var eventNm = req.params.name;
+    const eventNm = req.params.name;
 
     Event.findOne({name:eventNm}, (err, event)=>{
         if(err){
@@ -60,8 +60,8 @@ function getEventPubli(req, res){
     });
 }
 function getEvents(req, res){
-    var page = req.params.page;
-    var itemPerPage = 1000000;
+    const page = req.params.page;
+    const itemPerPage = 1000000;
 
     Event.find({$where: function(){
         return (this.datedel == null)
@@ -81,8 +81,8 @@ function getEvents(req, res){
     });
 }
 function getEventsPublic(req, res){
-    var page = req.params.page;
-    var itemPerPage = 3;
+    const page = req.params.page;
+    const itemPerPage = 1000000;
 
     Event.find({$where: function(){
         return (this.datedel == null)
@@ -102,9 +102,9 @@ function getEventsPublic(req, res){
     });
 }
 function updateEvent(req, res){
-    var user = auth.decode(req.headers.authorization);
-    var eventId = req.params.id;
-    var update = req.body;
+    const user = auth.decode(req.headers.authorization);
+    const eventId = req.params.id;
+    const update = req.body;
     update.dataedit = Date.now();
     update.personedit = user.name;
 
@@ -121,16 +121,16 @@ function updateEvent(req, res){
     });
 }
 function uploadImage(req, res){
-    var enventId = req.params.id;
-    var file_name = 'No subido....';
+    const enventId = req.params.id;
+    const file_name = 'No subido....';
 
     if(req.files){
-        var file_path = req.files.image.path;
-        var file_split = file_path.split('\/');
-        var file_name = file_split[2];
+        const file_path = req.files.image.path;
+        const file_split = file_path.split('\/');
+        const file_name = file_split[2];
 
-        var ext_split = file_name.split('\.');
-        var file_ext = ext_split[1];
+        const ext_split = file_name.split('\.');
+        const file_ext = ext_split[1];
 
 
         if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg' || file_ext == 'gif'){
@@ -150,8 +150,8 @@ function uploadImage(req, res){
     }
 }
 function getImageEvent(req, res){
-    var imageFile = req.params.imageFile;
-    var path_file = './uploads/event/'+imageFile;
+    const imageFile = req.params.imageFile;
+    const path_file = './uploads/event/'+imageFile;
 
     fs.exists(path_file, function(exists){
         if(exists){
@@ -162,9 +162,9 @@ function getImageEvent(req, res){
     });
 }
 function deleteEvent(req, res){
-    var user = auth.decode(req.headers.authorization); 
-    var eventId = req.params.id;
-    var update = req.body;
+    const user = auth.decode(req.headers.authorization); 
+    const eventId = req.params.id;
+    const update = req.body;
     update.datedel = Date.now();
     update.persondel = user.name;
 

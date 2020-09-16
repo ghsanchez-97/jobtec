@@ -1,15 +1,15 @@
 'use strict'
 
-var path = require('path');
-var fs = require('fs');
-var mongoosePagination = require('mongoose-pagination');
-var Video = require('../models/video');
-var auth = require('../middlewares/authenticated')
+const path = require('path');
+const fs = require('fs');
+const mongoosePagination = require('mongoose-pagination');
+const Video = require('../models/video');
+const auth = require('../middlewares/authenticated')
 
 function saveVideo(req, res){
-    var video = new Video();
-    var params = req.body;
-    var user = auth.decode()
+    const video = new Video();
+    const params = req.body;
+    const user = auth.decode()
 
     video.name = params.name;
     video.link = params.link;
@@ -30,7 +30,7 @@ function saveVideo(req, res){
     
 }
 function getVideo(req, res){
-    var videoId = req.params.id;
+    const videoId = req.params.id;
     
     Video.findById(videoId, (err, video) =>{
         if(err){
@@ -45,7 +45,7 @@ function getVideo(req, res){
     });
 }
 function getVideoPublic(req, res){
-    var videoId = req.params.name;
+    const videoId = req.params.name;
 
     Video.findOne({name: videoId}, (err, video) =>{
         if(err){
@@ -60,8 +60,8 @@ function getVideoPublic(req, res){
     });
 }
 function getsVideo(req, res){
-    var page = req.params.page;
-    var itemPerPage = 3;
+    const page = req.params.page;
+    const itemPerPage = 1000000;
 
     Video.find({$where: function(){
         return (this.datedel == null);
@@ -82,8 +82,8 @@ function getsVideo(req, res){
 
 }
 function getsVideoPublic(req, res){
-    var page = req.params.page;
-    var itemPerPage = 3;
+    const page = req.params.page;
+    const itemPerPage = 1000000;
 
     Video.find({$where: function(){
         return (this.datedel == null);
@@ -104,9 +104,9 @@ function getsVideoPublic(req, res){
 
 }
 function updateVideo(req, res){
-    var user = auth.decode(req.headers.authorization);
-    var videoId = req.params.id;
-    var update = req.body;
+    const user = auth.decode(req.headers.authorization);
+    const videoId = req.params.id;
+    const update = req.body;
     update.dataedit = Date.now();
     update.personedit = user.name;
 
@@ -123,9 +123,9 @@ function updateVideo(req, res){
     });
 }
 function deleteVideo(req, res){
-    var user = auth.decode(req.headers.authorization);
-    var videoId = req.params.id;
-    var update = req.body;
+    const user = auth.decode(req.headers.authorization);
+    const videoId = req.params.id;
+    const update = req.body;
     update.datedel = Date.now();
     update.persondel = user.name;
 

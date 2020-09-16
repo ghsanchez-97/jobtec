@@ -1,15 +1,15 @@
 'use strict'
 
-var path = require('path');
-var fs = require('fs');
-var mongoosePagination = require('mongoose-pagination');
-var Agend = require('../models/agend');
-var auth = require('../middlewares/authenticated');
+const path = require('path');
+const fs = require('fs');
+const mongoosePagination = require('mongoose-pagination');
+const Agend = require('../models/agend');
+const auth = require('../middlewares/authenticated');
 
 function saveAgend(req, res){
-    var agend = new Agend();
-    var params = req.body;
-    var user = auth.decode(req.headers.authorization);
+    const agend = new Agend();
+    const params = req.body;
+    const user = auth.decode(req.headers.authorization);
 
     agend.name = params.name;
     agend.description = params.description;
@@ -32,7 +32,7 @@ function saveAgend(req, res){
 
 }
 function getAgend(req, res){
-    var agendId = req.params.id;
+    const agendId = req.params.id;
 
     Agend.findById(agendId, (err, agend) =>{
         if(err){
@@ -47,7 +47,7 @@ function getAgend(req, res){
     });
 }
 function getAgendPublic(req, res){
-    var agendId = req.params.name;
+    const agendId = req.params.name;
 
     Agend.findOne({name:agendId}, (err, agend) =>{
         if(err){
@@ -62,8 +62,8 @@ function getAgendPublic(req, res){
     });
 }
 function getsAgends(req, res){
-    var page = req.params.page;
-    var itemPerPage = 3;
+    const page = req.params.page;
+    const itemPerPage = 100000000;
 
     Agend.find({$where: function(){
         return (this.datedel == null);
@@ -83,8 +83,8 @@ function getsAgends(req, res){
     });
 }
 function getsAgendsPublic(req, res){
-    var page = req.params.page;
-    var itemPerPage = 3;
+    const page = req.params.page;
+    const itemPerPage = 100000000;
 
     Agend.find({$where: function(){
         return (this.datedel == null);
@@ -104,9 +104,9 @@ function getsAgendsPublic(req, res){
     });
 }
 function updateAgend(req, res){
-    var user = auth.decode(req.headers.authorization);
-    var agendId = req.params.id;
-    var update = req.body;
+    const user = auth.decode(req.headers.authorization);
+    const agendId = req.params.id;
+    const update = req.body;
     update.dataedit = Date.now();
     update.personedit = user.name;
 
@@ -123,9 +123,9 @@ function updateAgend(req, res){
     });
 }
 function deleteAgend(req, res){
-    var user = auth.decode(req.headers.authorization);
-    var agendId = req.params.id;
-    var update = req.body;
+    const user = auth.decode(req.headers.authorization);
+    const agendId = req.params.id;
+    const update = req.body;
     update.datedel = Date.now();
     update.personedel = user.name;
 

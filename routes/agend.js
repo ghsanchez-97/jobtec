@@ -1,9 +1,9 @@
 'use strict'
 
-var express = require('express');
-var AgendController = require('../controllers/agend');
-var api = express.Router();
-var md_auth = require('../middlewares/authenticated');
+const express = require('express');
+const AgendController = require('../controllers/agend');
+const api = express.Router();
+const md_auth = require('../middlewares/authenticated');
 
 api.post('/newAgend', md_auth.ensureAuth, AgendController.saveAgend);
 api.get('/getAgend/:id', md_auth.ensureAuth, AgendController.getAgend);

@@ -1,17 +1,17 @@
 'use strict'
 
-var bcrypt = require('bcrypt-nodejs');
-var User = require('../models/user');
-var jwt = require('../services/jwt');
-var fs = require('fs');
-var path = require('path')
-var mongoosePagination = require('mongoose-pagination');
-var auth = require('../middlewares/authenticated');
+const bcrypt = require('bcrypt-nodejs');
+const User = require('../models/user');
+const jwt = require('../services/jwt');
+const fs = require('fs');
+const path = require('path')
+const mongoosePagination = require('mongoose-pagination');
+const auth = require('../middlewares/authenticated');
 
 function saveUser(req, res){
-var user = new User();
-var params = req.body;
-var use = auth.decode(req.headers.authorization);
+const user = new User();
+const params = req.body;
+const use = auth.decode(req.headers.authorization);
 
 user.firstname = params.firstname;
 user.middlename = params.middlename;
@@ -53,7 +53,7 @@ user.personcreat = use.name;
 }
 
 function getUser(req, res){
-  var userId = req.params.id;
+  const userId = req.params.id;
 
   User.findById(userId, (err, user) =>{
     if(err){
@@ -69,8 +69,8 @@ function getUser(req, res){
 }
 
 function getUsers(req, res){
-  var page = req.params.page;
-  var itemPerPage = 20;
+  const page = req.params.page;
+  const itemPerPage = 20;
 
   User.find({ $where: function(){
     return (this. fechaeliminado == null)
@@ -91,9 +91,9 @@ function getUsers(req, res){
 }
 
 function loginUser(req, res){
-  var params = req.body;
-  var email = params.email;
-  var password = params.password;
+  const params = req.body;
+  const email = params.email;
+  const password = params.password;
 
   User.findOne({email:email}, (err, user) =>{
     if(err){
@@ -122,9 +122,9 @@ function loginUser(req, res){
 }
 
 function updateUser(req, res){
-  var user = auth.decode(req.headers.authorization);
-  var userId = req.params.id;
-  var update = req.body;
+  const user = auth.decode(req.headers.authorization);
+  const userId = req.params.id;
+  const update = req.body;
   update.dataedit = Date.now();
   update.personedit = user.name;
 
@@ -142,15 +142,15 @@ function updateUser(req, res){
 }
 
 function uploadImage(req, res){
-  var userId = req.params.id;
-  var file_name = 'No subido...'
+  const userId = req.params.id;
+  const file_name = 'No subido...'
 
   if(req.files){
-    var file_path = req.files.image.path;
-    var file_split = file_path.split('\/');
-    var file_name = file_split[2];
-    var ext_split = file_name.split('\.');
-    var file_ext = ext_split[1];
+    const file_path = req.files.image.path;
+    const file_split = file_path.split('\/');
+    const file_name = file_split[2];
+    const ext_split = file_name.split('\.');
+    const file_ext = ext_split[1];
 
     if(file_ext == 'png'  || file_ext == 'jpg'){
       User.findByIdAndUpdate(userId, {image: file_name}, (err, userUpdate)=>{
@@ -169,8 +169,8 @@ function uploadImage(req, res){
 }
 
 function getImageFile(req, res){
-  var imageFile = req.params.imageFile;
-  var path_file = './uploads/user/'+imageFile;
+  const imageFile = req.params.imageFile;
+  const path_file = './uploads/user/'+imageFile;
 
   fs.exists(path_file, function(exists){
     if(exists){
@@ -182,9 +182,9 @@ function getImageFile(req, res){
 }
 
 function deleteUser(req, res){
-  var user = auth.decode(req.headers.authorization);
-  var userId = req.params.id;
-  var update = req.body;
+  const user = auth.decode(req.headers.authorization);
+  const userId = req.params.id;
+  const update = req.body;
   update.datedel = Date.now();
   update.persondel = user.name;
 

@@ -1,9 +1,9 @@
 'use strict'
 
-var express = require('express');
-var AudiContraller = require('../controllers/audi');
-var api = express.Router();
-var md_auth = require('../middlewares/authenticated');
+const express = require('express');
+const AudiContraller = require('../controllers/audi');
+const api = express.Router();
+const md_auth = require('../middlewares/authenticated');
 
 api.post('/NewAudi', md_auth.ensureAuth, AudiContraller.saveAudi);
 api.get('/getAudi/:id', md_auth.ensureAuth, AudiContraller.getAudi);

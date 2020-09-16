@@ -1,9 +1,9 @@
 'use strict'
 
-var express = require('express');
-var NewlettersController = require ('../controllers/newletters');
-var api = express.Router();
-var md_auth = require('../middlewares/authenticated');
+const express = require('express');
+const NewlettersController = require ('../controllers/newletters');
+const api = express.Router();
+const md_auth = require('../middlewares/authenticated');
 
 api.post('/NewNewletters', md_auth.ensureAuth, NewlettersController.saveNewletters);
 api.get('/getNewletters/:id', md_auth.ensureAuth, NewlettersController.getNewletters);

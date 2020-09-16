@@ -1,19 +1,19 @@
 'use strict'
 
-var express = require('express');
-var bodyparse = require('body-parser');
+const express = require('express');
+const bodyparse = require('body-parser');
 const https = require('https');
 
-var app = express();
+const app = express();
 
 //LOAD RUTS
-var user_routes = require('./routes/user');
-var event_routes = require('./routes/event');
-var new_routes = require('./routes/new');
-var agend_routes = require('./routes/agend');
-var audi_routes = require('./routes/audi');
-var newletters_routes = require('./routes/newletters');
-var video_routes = require('./routes/video');
+const user_routes = require('./routes/user');
+const event_routes = require('./routes/event');
+const new_routes = require('./routes/new');
+const agend_routes = require('./routes/agend');
+const audi_routes = require('./routes/audi');
+const newletters_routes = require('./routes/newletters');
+const video_routes = require('./routes/video');
 
 app.use(bodyparse.urlencoded({extended:false}));
 app.use(bodyparse.json());

@@ -1,15 +1,15 @@
 'use strict'
 
-var path = require('path');
-var fs = require('fs');
-var mongoosePagination = require('mongoose-pagination');
-var Audi = require('../models/Audi');
-var auth = require('../middlewares/authenticated');
+const path = require('path');
+const fs = require('fs');
+const mongoosePagination = require('mongoose-pagination');
+const Audi = require('../models/Audi');
+const auth = require('../middlewares/authenticated');
 
 function saveAudi(req, res){
-    var audi = new Audi();
-    var params = req.body;
-    var user = auth.decode(req.headers.authorization);
+    const audi = new Audi();
+    const params = req.body;
+    const user = auth.decode(req.headers.authorization);
 
     audi.name = params.name;
     audi.link = params.link;
@@ -30,7 +30,7 @@ function saveAudi(req, res){
     });
 }
 function getAudi(req, res){
-    var audiId = req.params.id;
+    const audiId = req.params.id;
 
     Audi.findById(audiId, (err, audi) =>{
         if(err){
@@ -45,7 +45,7 @@ function getAudi(req, res){
     });
 }
 function getAudiPublic(req, res){
-    var audiId = req.params.name;
+    const audiId = req.params.name;
 
     Audi.findOne({name:audiId}, (err, audi) =>{
         if(err){
@@ -60,8 +60,8 @@ function getAudiPublic(req, res){
     });
 }
 function getsAudis(req, res){
-    var page = req.params.page;
-    var itemPerpage = 3;
+    const page = req.params.page;
+    const itemPerpage = 1000000;
 
     Audi.find({$where: function(){
         return (this.datedel == null);
@@ -81,8 +81,8 @@ function getsAudis(req, res){
     });
 }
 function getsAudisPublic(req, res){
-    var page = req.params.page;
-    var itemPerpage = 3;
+    const page = req.params.page;
+    const itemPerpage = 1000000;
 
     Audi.find({$where: function(){
         return (this.datedel == null);
@@ -102,9 +102,9 @@ function getsAudisPublic(req, res){
     });
 }
 function updateAudi(req, res){
-    var user = auth.decode(req.headers.authorization);
-    var audiId = req.params.id;
-    var update = req.body;
+    const user = auth.decode(req.headers.authorization);
+    const audiId = req.params.id;
+    const update = req.body;
     update.dataedit = Date.now();
     update.personedit = user.name;
 
@@ -121,9 +121,9 @@ function updateAudi(req, res){
     });
 }
 function deleteAudi(req, res){
-    var user = auth.decode(req.headers.authorization);
-    var audiId = req.params.id;
-    var update = req.body;
+    const user = auth.decode(req.headers.authorization);
+    const audiId = req.params.id;
+    const update = req.body;
     update.datedel = Date.now();
     update.persondel = user.name;
 

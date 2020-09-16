@@ -1,9 +1,9 @@
 'use strict'
 
-var express = require('express');
-var VideoContraller = require('../controllers/video');
-var api = express.Router();
-var md_auth = require('../middlewares/authenticated');
+const express = require('express');
+const VideoContraller = require('../controllers/video');
+const api = express.Router();
+const md_auth = require('../middlewares/authenticated');
 
 api.post('/NewVideo', md_auth.ensureAuth, VideoContraller.saveVideo);
 api.get('/getVideo/:id', md_auth.ensureAuth, VideoContraller.getVideo);

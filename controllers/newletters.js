@@ -1,15 +1,15 @@
 'use strict'
 
-var path = require('path');
-var fs = require('fs');
-var mongoosePagination = require('mongoose-pagination');
-var Newletters = require ('../models/newsletters');
-var auth = require('../middlewares/authenticated');
+const path = require('path');
+const fs = require('fs');
+const mongoosePagination = require('mongoose-pagination');
+const Newletters = require ('../models/newsletters');
+const auth = require('../middlewares/authenticated');
 
 function saveNewletters(req, res){
-    var newsletters = new Newletters();
-    var params = req.body;
-    var user = auth.decode(req.headers.authorization);
+    const newsletters = new Newletters();
+    const params = req.body;
+    const user = auth.decode(req.headers.authorization);
 
     newsletters.name = params.name;
     newsletters.link = params.link;
@@ -29,7 +29,7 @@ function saveNewletters(req, res){
     });
 }
 function getNewletters(req, res){
-    var newslettersId = req.params.id;
+    const newslettersId = req.params.id;
 
     Newletters.findById(newslettersId, (err, newsletters) =>{
         if(err){
@@ -44,7 +44,7 @@ function getNewletters(req, res){
     });
 }
 function getNewlettersPublic(req, res){
-    var newslettersId = req.params.name;
+    const newslettersId = req.params.name;
 
     Newletters.findOne({name: newslettersId}, (err, newsletters) =>{
         if(err){
@@ -59,8 +59,8 @@ function getNewlettersPublic(req, res){
     });
 }
 function getsNewletters(req, res){
-    var page = req.params.page;
-    var itemPerPage = 3;
+    const page = req.params.page;
+    const itemPerPage = 1000000;
 
     Newletters.find({$where: function(){
         return (this.datedel ==  null);
@@ -80,8 +80,8 @@ function getsNewletters(req, res){
     });
 }
 function getsNewlettersPublic(req, res){
-    var page = req.params.page;
-    var itemPerPage = 3;
+    const page = req.params.page;
+    const itemPerPage = 1000000;
 
     Newletters.find({$where: function(){
         return (this.datedel ==  null);
@@ -101,9 +101,9 @@ function getsNewlettersPublic(req, res){
     });
 }
 function updateNewletters(req, res){
-    var user = auth.decode(req.headers.authorization);
-    var newslettersId = req.params.id;
-    var update = req.body;
+    const user = auth.decode(req.headers.authorization);
+    const newslettersId = req.params.id;
+    const update = req.body;
     update.dataedit = Date.now();
     update.personedit = user.name;
 
@@ -120,9 +120,9 @@ function updateNewletters(req, res){
     });
 }
 function deleteNewletters(req, res){
-    var user = auth.decode(req.headers.authorization);
-    var newslettersId = req.params.id;
-    var update = req.body;
+    const user = auth.decode(req.headers.authorization);
+    const newslettersId = req.params.id;
+    const update = req.body;
     update.datedel = Date.now();
     update.persondel = user.name;
 

@@ -1,15 +1,15 @@
 'use strict'
 
-var path = require('path');
-var fs = require('fs');
-var mongoosePagination = require('mongoose-pagination');
-var New = require('../models/news');
-var auth = require('../middlewares/authenticated');
+const path = require('path');
+const fs = require('fs');
+const mongoosePagination = require('mongoose-pagination');
+const New = require('../models/news');
+const auth = require('../middlewares/authenticated');
 
 function saveNew(req, res){
-    var nw = new New();
-    var params = req.body;
-    var user = auth.decode(req.headers.authorization);
+    const nw = new New();
+    const params = req.body;
+    const user = auth.decode(req.headers.authorization);
 
     nw.name = params.name;
     nw.detail = params.detail;
@@ -33,7 +33,7 @@ function saveNew(req, res){
     });
 }
 function getNew(req, res){
-    var newId = req.params.id;
+    const newId = req.params.id;
 
     New.findById(newId, (err, nw) =>{
         if(err){
@@ -48,7 +48,7 @@ function getNew(req, res){
     });
 }
 function getNewPublic(req, res){
-    var newId = req.params.name;
+    const newId = req.params.name;
 
     New.findOne({name:newId}, (err, nw) =>{
         if(err){
@@ -63,8 +63,8 @@ function getNewPublic(req, res){
     });
 }
 function getNews(req, res){
-    var page = req.params.page;
-    var itemPerPage = 100000;
+    const page = req.params.page;
+    const itemPerPage = 1000000;
 
     New.find({$where: function(){
         return (this.datedel == null)
@@ -84,8 +84,8 @@ function getNews(req, res){
     })
 }
 function getNewsPublic(req, res){
-    var page = req.params.page;
-    var itemPerPage = 3;
+    const page = req.params.page;
+    const itemPerPage = 1000000;
 
     New.find({$where: function(){
         return (this.datedel == null)
@@ -105,9 +105,9 @@ function getNewsPublic(req, res){
     })
 }
 function updateNew(req, res){
-    var user = auth.decode(req.headers.authorization);
-    var newId = req.params.id;
-    var update = req.body;
+    const user = auth.decode(req.headers.authorization);
+    const newId = req.params.id;
+    const update = req.body;
     update.dataedit = Date.now();
     update.personedit = user.name;
 
@@ -124,15 +124,15 @@ function updateNew(req, res){
     });
 }
 function uploadImage(req, res){
-    var newId = req.params.id;
-    var file_name = 'No subido...';
+    const newId = req.params.id;
+    const file_name = 'No subido...';
 
     if(req.files){
-        var file_path = req.files.image.path;
-        var file_split = file_path.split('\/');
-        var file_name = file_split[2];
-        var ext_split = file_name.split('\.');
-        var file_ext = ext_split[1];
+        const file_path = req.files.image.path;
+        const file_split = file_path.split('\/');
+        const file_name = file_split[2];
+        const ext_split = file_name.split('\.');
+        const file_ext = ext_split[1];
 
         if(file_ext == 'png' || file_ext == 'jpg' || file_ext == 'jpeg'){
             New.findByIdAndUpdate(newId, {image:file_name}, (err, newUpdate) =>{
@@ -150,8 +150,8 @@ function uploadImage(req, res){
     }
 }
 function getImageNew(req, res){
-    var imageFile = req.params.imageFile;
-    var path_file = './uploads/new/'+imageFile;
+    const imageFile = req.params.imageFile;
+    const path_file = './uploads/new/'+imageFile;
 
     fs.exists(path_file, function(exists){
         if(exists){
@@ -162,9 +162,9 @@ function getImageNew(req, res){
     })
 }
 function deleteNew(req, res){
-    var user = auth.decode(req.headers.authorization);
-    var newId = req.params.id;
-    var update = req.body;
+    const user = auth.decode(req.headers.authorization);
+    const newId = req.params.id;
+    const update = req.body;
     update.datedel = Date.now();
     update.personedel = user.name;
 
