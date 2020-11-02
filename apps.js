@@ -3,6 +3,7 @@
 const express = require('express');
 const bodyparse = require('body-parser');
 const https = require('https');
+const sslRedirect = require('heroku-ssl-redirect')
 
 const app = express();
 
@@ -12,6 +13,7 @@ const agent_routes = require('./routes/agent');
 
 app.use(bodyparse.urlencoded({extended:false}));
 app.use(bodyparse.json());
+app.use(sslRedirect());
 
 //configure headers http
 
