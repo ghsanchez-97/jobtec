@@ -4,6 +4,8 @@ const express = require('express');
 const bodyparse = require('body-parser');
 const https = require('https');
 
+const app = express();
+
 //LOAD RUTS
 const user_routes = require('./routes/user');
 const agent_routes = require('./routes/agent');
