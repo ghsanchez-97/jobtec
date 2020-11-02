@@ -10,7 +10,6 @@ const agent_routes = require('./routes/agent');
 
 app.use(bodyparse.urlencoded({extended:false}));
 app.use(bodyparse.json());
-app.use(sslRedirect());
 
 //configure headers http
 
