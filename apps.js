@@ -3,9 +3,6 @@
 const express = require('express');
 const bodyparse = require('body-parser');
 const https = require('https');
-const sslRedirect = require('heroku-ssl-redirect')
-
-const app = express();
 
 //LOAD RUTS
 const user_routes = require('./routes/user');
