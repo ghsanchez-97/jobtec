@@ -69,8 +69,8 @@ function getUser(req, res){
 }
 
 function getUsers(req, res){
-  const page = req.params.page;
-  const itemPerPage = 20;
+  let page = req.params.page;
+  let itemPerPage = 20;
 
   User.find({ $where: function(){
     return (this. fechaeliminado == null)
