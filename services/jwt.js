@@ -7,9 +7,9 @@ const secret = 'secret_key';
 exports.createToken = function(user){
     var payload = {
         sub: user._id,
-        firstname: user.firstname,
+        firstname: user.firstname ,
         firstlastname: user.firstlastname,
-        name: user.firstname= + user.firstlastname,
+        name: user.firstname + user.firstlastname,
         email: user.email,
         role: user.rol,
         image: user.image,
