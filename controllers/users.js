@@ -53,7 +53,7 @@ user.personcreat = use.name;
 }
 
 function getUser(req, res){
-  const userId = req.params.id;
+  let userId = req.params.id;
 
   User.findById(userId, (err, user) =>{
     if(err){
@@ -69,11 +69,11 @@ function getUser(req, res){
 }
 
 function getUsers(req, res){
-  let page = req.params.page;
-  let itemPerPage = 20;
+  const page = req.params.page;
+  const itemPerPage = 20;
 
   User.find({ $where: function(){
-    return (this. fechaeliminado == null)
+    return (this. persondel == null)
   }}).sort('firstname').paginate(page, itemPerPage, function(err, user, total){
     if(err){
       res.status(500).send({message:'Error en la solicitud'});

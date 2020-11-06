@@ -7,7 +7,7 @@ const port = process.env.PORT || 3000
 
 mongoose.set('useFindAndModify', false);
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb+srv://ghsanchez97:Gh$anchez97@db-job.bdg9e.mongodb.net/jobtec', {useNewUrlParser: true,  useUnifiedTopology: true}, (err, res)=>{
+mongoose.connect('mongodb+srv://ghsanchez97:Gh$anchez97@db-job.bdg9e.mongodb.net/jobtec?retryWrites=true&w=majority', {useNewUrlParser: true,  useUnifiedTopology: true}, (err, res)=>{
 
   if(err){
     throw err;

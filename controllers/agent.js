@@ -7,8 +7,8 @@ const Agent = require('../models/agent');
 const auth = require('../middlewares/authenticated');
 
 function saveAgent(req, res){
-    const agent = new Agent();
-    const params = req.body;
+    let agent = new Agent();
+    let params = req.body;
     const user = auth.decode(req.headers.authorization);
 
     agent.name = params.name;
@@ -22,27 +22,27 @@ function saveAgent(req, res){
     agent.datecreat = Date.now();
     agent.personcreat = user.name;
 
-    agent.save((err, agendStored) =>{
+    agent.save((err, agentStored) =>{
         if(err){
             res.status(500).send({message:'Error en la solicitud'});
         }else{
-            if(!agendStored){
+            if(!agentStored){
                 res.status(404).send({message:'Error al guardar Agenda'});
             }else{
-                res.status(200).send({agend:agendStored});
+                res.status(200).send({agent:agentStored});
             }
         }
     });
 
 }
 function getAgent(req, res){
-    const agentId = req.params.id;
+    let agentId = req.params.id;
 
-    Agent.findById(agentId, (err, agend) =>{
+    Agent.findById(agentId, (err, agent) =>{
         if(err){
             res.status(500).send({message:'Error en la solicitud'});
         }else{
-            if(!agend){
+            if(!agent){
                 res.status(404).send({message:'Error no exite Agenda'});
             }else{
                 res.status(200).send({agent});
@@ -51,13 +51,13 @@ function getAgent(req, res){
     });
 }
 function getAgentPublic(req, res){
-    const agentId = req.params.name;
+    let agentId = req.params.name;
 
-    Agent.findOne({name:agentId}, (err, agend) =>{
+    Agent.findOne({name:agentId}, (err, agent) =>{
         if(err){
             res.status(500).send({message:'Error en la solicitud'});
         }else{
-            if(!agend){
+            if(!agent){
                 res.status(404).send({message:'Error no exite Agenda'});
             }else{
                 res.status(200).send({agent});
@@ -66,8 +66,8 @@ function getAgentPublic(req, res){
     });
 }
 function getsAgents(req, res){
-    const page = req.params.page;
-    const itemPerPage = 100000000;
+    let page = req.params.page;
+    let itemPerPage = 100000000;
 
     Agent.find({$where: function(){
         return (this.datedel == null);
@@ -87,10 +87,10 @@ function getsAgents(req, res){
     });
 }
 function getsAgentsPublic(req, res){
-    const page = req.params.page;
-    const itemPerPage = 100000000;
+    let page = req.params.page;
+    let itemPerPage = 100000000;
 
-    Agend.find({$where: function(){
+    Agent.find({$where: function(){
         return (this.datedel == null);
     }}).sort('name').paginate(page, itemPerPage, function(err, agent, total){
         if(err){
@@ -109,7 +109,7 @@ function getsAgentsPublic(req, res){
 }
 function updateAgent(req, res){
     const user = auth.decode(req.headers.authorization);
-    const agentId = req.params.id;
+    let agentId = req.params.id;
     const update = req.body;
     update.dataedit = Date.now();
     update.personedit = user.name;
@@ -128,7 +128,7 @@ function updateAgent(req, res){
 }
 function deleteAgent(req, res){
     const user = auth.decode(req.headers.authorization);
-    const agentId = req.params.id;
+    let agentId = req.params.id;
     const update = req.body;
     update.datedel = Date.now();
     update.personedel = user.name;
