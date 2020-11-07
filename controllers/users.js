@@ -72,9 +72,7 @@ function getUsers(req, res){
   const page = req.params.page;
   const itemPerPage = 20;
 
-  User.find({ $where: function(){
-    return (this. persondel == null)
-  }}).sort('firstname').paginate(page, itemPerPage, function(err, user, total){
+  User.find().sort('firstname').paginate(page, itemPerPage, function(err, user, total){
     if(err){
       res.status(500).send({message:'Error en la solicitud'});
     }else{
@@ -82,7 +80,7 @@ function getUsers(req, res){
         res.status(404).send({message:'No hay Usuarios!!!'});
       }else{
         return res.status(200).send({
-          total_Item: total,
+          total: total,
           user: user,
         });
       }
