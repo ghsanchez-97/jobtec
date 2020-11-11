@@ -86,7 +86,7 @@ function getsAgents(req, res){
 }
 function getsAgentsPublic(req, res){
     let page = req.params.page;
-    let itemPerPage = 100000000;
+    let itemPerPage = 10000000;
 
     Agent.find().sort('name').paginate(page, itemPerPage, function(err, agent, total){
         if(err){
