@@ -69,9 +69,7 @@ function getsAgents(req, res){
     let page = req.params.page;
     let itemPerPage = 100000000;
 
-    Agent.find({$where: function(){
-        return (this.datedel == null)
-    }}).sort('name').paginate(page, itemPerPage, function(err, agent, total){
+    Agent.find().sort('name').paginate(page, itemPerPage, function(err, agent, total){
         if(err){
             res.status(500).send({message:'Error en la solicitud'});
         }else{
@@ -133,7 +131,7 @@ function deleteAgent(req, res){
     update.datedel = Date.now();
     update.personedel = user.name;
 
-    Agent.findByIdAndUpdate(agentId, update, (err, agentUpdate) => {
+    Agent.findByIdAndRemove(agentId, update, (err, agentUpdate) => {
         if(err){
             res.status(500).send({message:'Error en la solicitud'});
         }else{

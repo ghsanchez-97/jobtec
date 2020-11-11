@@ -72,9 +72,7 @@ function getUsers(req, res){
   const page = req.params.page;
   const itemPerPage = 20;
 
-  User.find({$where: function(){
-    return (this.datedel == null);
-}}).sort('firstname').paginate(page, itemPerPage, function(err, user, total){
+  User.find().sort('firstname').paginate(page, itemPerPage, function(err, user, total){
     if(err){
       res.status(500).send({message:'Error en la solicitud'});
     }else{
@@ -188,7 +186,7 @@ function deleteUser(req, res){
   update.datedel = Date.now();
   update.persondel = user.name;
 
-  User.findByIdAndUpdate(userId, update, (err, userUpdate) =>{
+  User.findByIdAndRemove(userId, update, (err, userUpdate) =>{
     if(err){
       res.status(500).send({message:'Error en la solicitud'});
     }else{
