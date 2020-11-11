@@ -88,9 +88,7 @@ function getsAgentsPublic(req, res){
     let page = req.params.page;
     let itemPerPage = 100000000;
 
-    Agent.find({$where: function(){
-        return (this.datedel == null);
-    }}).sort('name').paginate(page, itemPerPage, function(err, agent, total){
+    Agent.find().sort('name').paginate(page, itemPerPage, function(err, agent, total){
         if(err){
             res.status(500).send({message:'Error en la solicitud'});
         }else{
